@@ -26,15 +26,25 @@ module InternationalDateParser
       it: %w(gennaio febbraio marzo aprile maggio giugno luglio agosto settembre ottobre novembre dicembre),  # Italian
       es: %w(enero febrero marzo abril mayo junio julio agosto septiembre octubre noviembre diciembre), # Spanish
       pt: %w(janeiro fevereiro março abril maio junho julho agosto setembro outubro novembro dezembro), # Portuguese
+      en: Date::MONTHNAMES[1..12], # English
     }
     MONTH_TRANSLATIONS = MONTH_TO_PARSE.values.flatten
     MONTH_TRANSLATIONS_SHORT = MONTH_TRANSLATIONS.map{|m| m[0,3]}
 
     def self.parse_international(date)
-      Date.parse(date_to_english(date))
+      return nil if date.nil? || date.empty?
+      if date.is_a? Array
+        date.push(Date.today.year) if date.flatten.count <= 2
+        date = date.join(" ")
+      end
+      if date.scan(/[a-zA-Z]/).empty?
+        Date.parse(date)
+      else
+        Date.parse(date_to_english(date))
+      end
     end
 
-    def self.date_to_english(date)
+    def self.date_to_english(date)      
       month_from = date[/[^\s\d,]{3,}/i].downcase      # Search for a month name
       month_index = MONTH_TRANSLATIONS.index(month_from) || MONTH_TRANSLATIONS_SHORT.index(month_from)
       date.scan(/\s[^\s\d,]{1,2}\s/).each{|s| date.sub!(s[/[^\s]+/],'') if s}

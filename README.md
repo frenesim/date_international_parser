@@ -8,6 +8,14 @@ Extend the date parsing capabilities of Ruby to work with dates which months are
 ```
 InternationalDateParser::Date.parse_international("28 de Fevereiro de 2020")
 InternationalDateParser::Date.parse_international("28 abr 2020")
+InternationalDateParser::Date.parse_international("28 abr")
+InternationalDateParser::Date.parse_international("28")
+InternationalDateParser::Date.parse_international([[]])
+
+InternationalDateParser::parse_international(['Fevereiro 11']))
+InternationalDateParser::parse_international([[11],['Fev']]))
+InternationalDateParser::parse_international([['Fev'],['11']]))
+InternationalDateParser::parse_international([['Fev'],['01'],[2011]]))
 
 ```
 

@@ -16,9 +16,10 @@
   #    names for any additional languages you wish to handle.
   #
 
+require 'date'
+
 module InternationalDateParser
 
-  require 'date'
   class Date < Date
     MONTH_TO_PARSE = {
       fr: %w(janvier février mars avril mai juin juillet août septembre octobre novembre décembre), # French
@@ -44,7 +45,7 @@ module InternationalDateParser
       end
     end
 
-    def self.date_to_english(date)      
+    def self.date_to_english(date)
       month_from = date[/[^\s\d,]{3,}/i].downcase      # Search for a month name
       month_index = MONTH_TRANSLATIONS.index(month_from) || MONTH_TRANSLATIONS_SHORT.index(month_from)
       date.scan(/\s[^\s\d,]{1,2}\s/).each{|s| date.sub!(s[/[^\s]+/],'') if s}
@@ -55,5 +56,3 @@ module InternationalDateParser
   end
 
 end
-
-require 'international_date_parser/railtie' if defined?(Rails)
